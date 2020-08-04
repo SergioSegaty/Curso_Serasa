@@ -18,7 +18,6 @@ const transformNewsObject = (articles) => {
 
     articles.forEach(a => {
         let newObj = new News(a);
-
         articlesList.push(newObj);
     })
     return articlesList;
@@ -26,7 +25,5 @@ const transformNewsObject = (articles) => {
 
 export default async function fetchAll() {
     let list = transformNewsObject(await fetchNews(url));
-    console.log('Lista é: ');
-    console.log(list);
     return list;
 }

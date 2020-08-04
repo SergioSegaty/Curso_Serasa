@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #403d42;
+}
+
+.card {
+    border-radius: 3px;
+    background-color: #403d42;
+    padding: 3px;
+    border: 1px solid black;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 1px 3px 10px 1px black;
+    font-family: 'Montserrat', sans-serif;
+    color: #fafafa;
+    margin-top: 5px;
+    min-width: 300px;
+}
+
+.card {
+    padding: 4px;
+    margin-bottom: 25px;
+}
+
+.card h4 {
+    font-size: 0.9rem;
+}
+
+.card .img {
+    width: 100%;
+    height: 200px;
+    border-bottom: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+}
+
+.card .auth {
+    align-self: flex-end;
+    margin-bottom: 2px;
+}
+
+.card .content {
+    margin-top: 5px;
+    align-self: center;
+    width: 98%;
+    border-radius: 5px;
+    padding: 3px;
+    color: rgb(240, 216, 216);
+    font-weight: bolder;
+}
+
+.content h4 {
+    font-weight: 400;
+}
+
+.content p {
+    text-indent: 35px;
+}
+
+.card .content * {
+    margin-top: 2px;
+}
+
+.card .title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 2.5px;
+}
+
+.footer {
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.socialB {
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+    height: 20%;
+}
+
+.buttons {
+    border-radius: 6px;
+    height: 25px;
+    width: 25px;
+    margin: 10px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fa-heart {
+    color: #c5c2c7;
+}
+
+.fa-twitter {
+    color: #c5c2c7;
+}
+
+.buttons:hover .fa-heart {
+    color: red;
+    border: none;
+    outline: none;
+}
+
+.buttons:hover .fa-twitter {
+    color: #213072;
+}
+
+@media (min-width: 550px) {
+    .card .img {
+        max-width: 400px;
+    }
+    .card .auth {
+        align-self: flex-start;
+        margin-top: 10px;
+    }
+    .card {
+        max-width: 500px;
+    }
+    .card .img {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .content h4 {
+        text-align: right;
+        margin-bottom: 3px;
+    }
+}
