@@ -2,16 +2,20 @@ const dbName = 'NewsDb';
 const tableName = 'NewsFav';
 
 export default function NewsDb() {
-
-
+    /**
+     * Recebe um nome de banco e cria a conexão com ele.
+     * @param {String} dbName 
+     */
     const connection = async(dbName) => {
         let connection = await window.indexedDB.open(dbName);
 
         return connection;
     }
 
+    /**
+     * Inicia o banco e verifica se ele já está criado. Se precisa ele cria;
+     */
     const startDB = async() => {
-        debugger;
         let req = await connection(dbName);
         let db;
 
@@ -45,11 +49,14 @@ export default function NewsDb() {
         };
     }
 
+    /**
+     * Adiciona uma noticia ao banco de dados.
+     * @param {Object} noticia 
+     */
     const addNewsToFav = async(noticia) => {
         let req = await connection(dbName);
 
         req.onsuccess = (e) => {
-            debugger;
 
             let db = e.target.result;
 
@@ -72,7 +79,6 @@ export default function NewsDb() {
     }
 
     const getAllNews = async() => {
-        debugger;
         let req = await connection(dbName);
 
         req.onsuccess = async(e) => {

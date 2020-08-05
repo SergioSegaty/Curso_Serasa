@@ -7,7 +7,9 @@ export default function Controller() {
         NewsDb().startDB();
 
         let newsList = await fetchAll();
-
+        
+        console.log(newsList);
+        
         let body = document.querySelector('body');
 
         newsList.forEach(article => {
@@ -18,7 +20,6 @@ export default function Controller() {
     }
 
     const saveToDb = async(tarefa) => {
-        debugger;
         console.log('Salvando no DB');
         NewsDb().addNewsToFav(tarefa);
     }

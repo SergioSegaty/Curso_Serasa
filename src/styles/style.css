@@ -15,7 +15,7 @@ body {
 .card {
     border-radius: 3px;
     background-color: #403d42;
-    padding: 3px;
+    padding:  3px;
     border: 1px solid black;
     height: auto;
     display: flex;
@@ -125,6 +125,8 @@ body {
 
 .buttons:hover .fa-twitter {
     color: #213072;
+    border: none;
+    outline: none
 }
 
 @media (min-width: 550px) {

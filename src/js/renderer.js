@@ -24,7 +24,7 @@ export default function Renderer() {
 
         let img = document.createElement('div');
         img.setAttribute('class', 'img');
-        img.style.backgroundImage = 'url(' + article.urlToImage + ')';
+        img.style.backgroundImage = 'url(' + article.imageUrl + ')';
         body.append(img);
 
         let content = document.createElement('div');

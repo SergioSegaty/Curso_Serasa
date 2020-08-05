@@ -18,6 +18,7 @@ const transformNewsObject = (articles) => {
 
     articles.forEach(a => {
         let newObj = new News(a);
+        //newObj.validate;
         articlesList.push(newObj);
     })
     return articlesList;
