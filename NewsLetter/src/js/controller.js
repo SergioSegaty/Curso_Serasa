@@ -1,15 +1,27 @@
-import NewsDb from "./newsDAO.js";
-import fetchAll from "./fetchNews.js";
+import { NewsAPI } from "./fetchNews.js";
+import { Test_NewsDAO } from '../UnitTests/test_newsDAO.js';
+import { NewsDB } from './newsDAO.js';
 import Renderer from "./renderer.js";
 
-export default function Controller() {
-    const mainController = async() => {
-        NewsDb().startDB();
+const op = {
+    'everything': 'everything?',
+    'top': 'top-headlines?'
+}
 
-        let newsList = await fetchAll();
-        
+export default class Controller {
+
+    constructor() {
+
+    }
+
+    startController = async () => {
+        let db = new NewsDB('NewsDB', 'FavNews');
+        db.startDB();
+
+        let api = new NewsAPI();
+        let newsList = await api.getAll(op.top, 'us');
         console.log(newsList);
-        
+
         let body = document.querySelector('body');
 
         newsList.forEach(article => {
@@ -19,15 +31,15 @@ export default function Controller() {
 
     }
 
-    const saveToDb = async(tarefa) => {
+    saveToDb = async (tarefa) => {
         console.log('Salvando no DB');
-        NewsDb().addNewsToFav(tarefa);
+        new NewsDB().addNewsToFav(tarefa);
     }
 
-    return {
-        mainController,
-        saveToDb
-    }
 }
 
-Controller().mainController();
+// let ctrl = new Controller();
+// ctrl.startController();
+
+let DAOtests = new Test_NewsDAO();
+DAOtests.Test_addNewsToFav();

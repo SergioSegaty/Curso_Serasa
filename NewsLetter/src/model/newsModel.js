@@ -21,8 +21,7 @@ export default class News {
         } 
             
         this.name ? this.name : this.title;
-
-        let a = 8;
+        this.title ? this.title : this.name;
     }
 
 

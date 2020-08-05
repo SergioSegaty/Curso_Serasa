@@ -1,13 +1,25 @@
-const dbName = 'NewsDb';
-const tableName = 'NewsFav';
 
-export default function NewsDb() {
+export class NewsDB {
+
+
     /**
-     * Recebe um nome de banco e cria a conexão com ele.
+     * It gets two params with the constructor, these are the DataBase Name and Table,
+     * respectively. These are important values, which are used to create the Db and find it.
      * @param {String} dbName 
+     * @param {String} tableName 
      */
-    const connection = async(dbName) => {
-        let connection = await window.indexedDB.open(dbName);
+    constructor(dbName, tableName){
+        this.dbName = dbName;
+        this.tableName = tableName;
+    }
+
+
+    /**
+     * Cria a conexão com o Banco de Dados pelo Nome dado no Construtor
+     */
+     connection = async() => {
+         debugger;
+        let connection = await window.indexedDB.open(this.dbName);
 
         return connection;
     }
@@ -15,36 +27,36 @@ export default function NewsDb() {
     /**
      * Inicia o banco e verifica se ele já está criado. Se precisa ele cria;
      */
-    const startDB = async() => {
-        let req = await connection(dbName);
+    startDB = async() => {
+        let req = await this.connection();
         let db;
 
         req.onsuccess = (e) => {
             db = e.target.result;
-            console.log('Deu boa!, DB nome: ' + dbName);
+            console.log('Deu boa!, DB nome: ' + this.dbName);
             console.log(db);
         }
 
         req.onerror = (e) => {
             db = e.target.result;
-            console.log('Deu ruim, DB nome: ' + dbName);
+            console.log('Deu ruim, DB nome: ' + this.dbName);
             console.log(db);
         }
 
         req.onupgradeneeded = (e) => {
-            console.log('Atualizando o DB: ' + dbName);
+            console.log('Atualizando o DB: ' + this.dbName);
             db = e.target.result;
 
-            var store = db.createObjectStore(tableName, {
+            var store = db.createObjectStore(this.tableName, {
                 keyPath: 'id',
                 autoIncrement: true
             })
 
             store.onsuccess = () => {
-                console.log('Tabela : ' + tableName + '  foi criada com sucesso');
+                console.log('Tabela : ' + this.tableName + '  foi criada com sucesso');
             }
             store.onerror = () => {
-                console.log('Tabela : ' + tableName + ' não conseguiu ser criada');
+                console.log('Tabela : ' + this.tableName + ' não conseguiu ser criada');
             }
         };
     }
@@ -53,14 +65,15 @@ export default function NewsDb() {
      * Adiciona uma noticia ao banco de dados.
      * @param {Object} noticia 
      */
-    const addNewsToFav = async(noticia) => {
-        let req = await connection(dbName);
+    addNewsToFav = async(noticia) => {
+        debugger;
+        let req = await this.connection(this.dbName);
 
         req.onsuccess = (e) => {
 
             let db = e.target.result;
 
-            let store = db.transaction(tableName, 'readwrite').objectStore(tableName);
+            let store = db.transaction(this.tableName, 'readwrite').objectStore(this.tableName);
             let storeAdd = store.add(noticia);
 
             storeAdd.onsuccess = e => {
@@ -78,27 +91,21 @@ export default function NewsDb() {
         }
     }
 
-    const getAllNews = async() => {
-        let req = await connection(dbName);
+    getAllNews = async() => {
+        let req = await this.connection(this.dbName);
 
         req.onsuccess = async(e) => {
             let db = e.target.result;
 
-            let store = db.transaction(tableName, 'readwrite').objectStore(tableName);
+            let store = db.transaction(this.tableName, 'readwrite').objectStore(this.tableName);
             let result = await store.getAll();
 
             return result;
         }
 
         req.onerror = () => {
-            console.log('Não foi possível abrir o Db' + dbName);
+            console.log('Não foi possível abrir o Db' + this.dbName);
         }
 
-    }
-
-    return {
-        startDB,
-        addNewsToFav,
-        getAllNews
     }
 }
