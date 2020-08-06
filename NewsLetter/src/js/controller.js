@@ -46,19 +46,29 @@ export default class Controller {
         new NewsDB().addNewsToFav(article);
     }
 
+    /**
+     * Executes every test for the NewsAPI.
+     */
+    startApiTests = () => {
+        let testApi = new Test_NewsAPI();
+        testApi.testGetUrlGetAll('bitcoin');
+        testApi.testGetAll('bitcoin');
+        testApi.testGetUrlGetTop('us');
+        testApi.testGetTop('us');
+    }
+
+    /**
+     * Executes every test for Data Acess Object.
+     */
+    startDAOTests = () => {
+        let DAOtests = new Test_NewsDAO();
+        DAOtests.Test_Connection();
+        DAOtests.Test_addNewsToFav();
+        DAOtests.Test_GetAll();
+    }
+
 }
 
 // let ctrl = new Controller();
 // ctrl.startController();
 
-let DAOtests = new Test_NewsDAO();
-DAOtests.Test_addNewsToFav();
-
-
-//Testes
-
-let testApi = new Test_NewsAPI()
-testApi.testGetUrlGetAll('bitcoin');
-testApi.testGetAll('bitcoin');
-testApi.testGetUrlGetTop('us');
-testApi.testGetTop('us');
