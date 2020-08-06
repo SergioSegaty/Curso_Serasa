@@ -20,13 +20,14 @@ export default class Controller {
     /**
      * Start the Controller which starts the DB, does a get into the NewsAPI and renders the Cards.
      * Call this function to start the magic.
+     * The Api is set to get the Top 20 articles of the target country, in this case Us.
      */
     startController = async () => {
         let db = new NewsDB('NewsDB', 'FavNews');
         db.startDB();
 
         let api = new NewsAPI();
-        let newsList = await api.getAll(op.top, 'us');
+        let newsList = await api.getTop('us');
         console.log(newsList);
 
         let body = document.querySelector('body');
