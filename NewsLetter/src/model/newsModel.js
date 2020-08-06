@@ -15,7 +15,6 @@ export default class News {
 
 
     validation = () => {
-        debugger;
         if(this.imageUrl == null){
             this.imageUrl = 'https://via.placeholder.com/300';
         } 
@@ -23,6 +22,4 @@ export default class News {
         this.name ? this.name : this.title;
         this.title ? this.title : this.name;
     }
-
-
 }

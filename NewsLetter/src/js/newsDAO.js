@@ -1,3 +1,4 @@
+import News from "../model/newsModel";
 
 export class NewsDB {
 
@@ -15,7 +16,7 @@ export class NewsDB {
 
 
     /**
-     * Cria a conexão com o Banco de Dados pelo Nome dado no Construtor
+     * Creates the connection recieving the DbName that its passed on its call.
      */
      connection = async() => {
          debugger;
@@ -25,7 +26,7 @@ export class NewsDB {
     }
 
     /**
-     * Inicia o banco e verifica se ele já está criado. Se precisa ele cria;
+     * Initiates the Database and see if everything connects.
      */
     startDB = async() => {
         let req = await this.connection();
@@ -62,8 +63,8 @@ export class NewsDB {
     }
 
     /**
-     * Adiciona uma noticia ao banco de dados.
-     * @param {Object} noticia 
+     * Adds a News object to the Database.
+     * @param {News} noticia 
      */
     addNewsToFav = async(noticia) => {
         debugger;
@@ -91,6 +92,9 @@ export class NewsDB {
         }
     }
 
+    /**
+     * Returns all the news on indexed Db.
+     */
     getAllNews = async() => {
         let req = await this.connection(this.dbName);
 

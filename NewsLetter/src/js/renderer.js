@@ -1,7 +1,12 @@
 import Controller from "./controller.js";
+import News from "../model/newsModel.js";
 
 export default function Renderer() {
 
+    /**
+     * Takes a News object as parameter and returns a Rendered Card populated with the news.
+     * @param {News} article 
+     */
     const renderCard = (article) => {
         let body = document.createElement('div');
         body.setAttribute('class', 'card');
@@ -45,6 +50,10 @@ export default function Renderer() {
         return body;
     }
 
+    /**
+     * Takes the article, renders the footer with buttons and adds the Listeners.
+     * @param {News} article 
+     */
     const renderFooter = (article) => {
 
         let footer = document.createElement('div');
@@ -77,6 +86,10 @@ export default function Renderer() {
         return footer;
     }
 
+    /**
+     * Takes the Date and Parses it to a more readable string.
+     * @param {string} date 
+     */
     const cleanDate = (date) => {
         let key = '-';
         let fixedDate = date.replace('Z', '').replace(/[/-]/g, (char) => key[char] || '/').split('T').join(' - ');
