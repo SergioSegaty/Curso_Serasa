@@ -70,7 +70,6 @@ export class NewsDB {
         let req = await this.connection(this.dbName);
 
         req.onsuccess = (e) => {
-            debugger;
             let db = e.target.result;
             let store = db.transaction(this.tableName, 'readwrite').objectStore(this.tableName);
             let storeAdd = store.add(noticia);

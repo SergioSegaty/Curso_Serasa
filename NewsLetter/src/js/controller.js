@@ -126,6 +126,6 @@ export default class Controller {
 
 let ctrl = new Controller();
 ctrl.startController();
-ctrl.startApiTests();
-ctrl.startDAOTests();
-ctrl.startsRenderTests();
+// ctrl.startApiTests();
+// ctrl.startDAOTests();
+// ctrl.startsRenderTests();
