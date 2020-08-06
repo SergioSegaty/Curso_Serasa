@@ -1,9 +1,12 @@
 import Controller from "./controller.js";
 import News from "../model/newsModel.js";
 
+
 export default function Renderer() {
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Takes a News object as parameter and returns a Rendered Card populated with the news.
      * @param {News} article 
      */
@@ -51,6 +54,8 @@ export default function Renderer() {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Takes the article, renders the footer with buttons and adds the Listeners.
      * @param {News} article 
      */
@@ -65,7 +70,7 @@ export default function Renderer() {
 
         let buttonFav = document.createElement('div');
         buttonFav.setAttribute('class', 'buttons');
-        buttonFav.addEventListener('click', (e) => Controller().saveToDb(article));
+        buttonFav.addEventListener('click', (e) => new Controller('').saveToDb(article));
 
         let iconFav = document.createElement('i');
         iconFav.setAttribute('class', 'fa fa-heart');
@@ -87,6 +92,8 @@ export default function Renderer() {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Takes the Date and Parses it to a more readable string.
      * @param {string} date 
      */
@@ -97,7 +104,8 @@ export default function Renderer() {
     }
 
     return {
-        renderCard
+        renderCard,
+        renderFooter
     }
 
 }
