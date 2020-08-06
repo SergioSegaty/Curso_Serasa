@@ -29,7 +29,7 @@ export class NewsAPI {
      * It recieves a options object and a string that can be N.
      * For a GetAll, N is a word for query ie: 'bitcoin', 'trump', 'beirut'.
      * For a GetTop, N is a Acronym for the target country ie: us, br, en, ca.
-     * @param {Object} options 
+     * @param {op} options 
      * @param {String} n 
      */
     getUrl(options, n) {
