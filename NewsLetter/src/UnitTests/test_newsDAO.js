@@ -6,6 +6,8 @@ export class Test_NewsDAO {
 
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Checks if the connection with the IndexedDB is possible.
      */
     async Test_Connection() {
@@ -21,6 +23,8 @@ export class Test_NewsDAO {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Checks if you can save an item on IndexedDB.
      */
     async Test_addNewsToFav() {
@@ -39,6 +43,8 @@ export class Test_NewsDAO {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * Checks if you can make a get from IndexedDB.
      */
     async Test_GetAll() {

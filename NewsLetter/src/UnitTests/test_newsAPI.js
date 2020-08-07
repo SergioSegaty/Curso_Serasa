@@ -11,6 +11,8 @@ export class Test_NewsAPI {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * The query should be a string with one word.
      * @param {String} query 
      */
@@ -27,12 +29,13 @@ export class Test_NewsAPI {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * The query should be a string with one word.
      * @param {String} query 
      */
     testGetUrlGetAll(query) {
         console.log('Test_NewsApi - GetUrl - GetAll - Unit Test');
-        debugger;
         let staticUrl = 'https://newsapi.org/v2/everything?q=bitcoin&apiKey=74b3fd2332654343a940903d9a1f267c'
         let api = new NewsAPI();
 
@@ -45,6 +48,8 @@ export class Test_NewsAPI {
     }
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * The country should be only initials, ie: us, br, ca, en.
      * @param {String} country 
      */
@@ -63,12 +68,13 @@ export class Test_NewsAPI {
 
 
     /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
      * The country should be only initials, ie: us, br, ca, en.
      * @param {String} country 
      */
     testGetUrlGetTop(country) {
         console.log('Test_NewsApi - GetUrl - GetTop -  Unit Test');
-        debugger;
         let staticUrl = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=74b3fd2332654343a940903d9a1f267c'
         let api = new NewsAPI();
 
@@ -81,5 +87,3 @@ export class Test_NewsAPI {
         }
     }
 }
-
-
