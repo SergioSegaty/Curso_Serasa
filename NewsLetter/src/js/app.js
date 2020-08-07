@@ -1,6 +1,3 @@
-var ctrl = new Controller();
-ctrl.startController();
-
 export class App {
   registerWorker = () => {
     if ("serviceWorker" in navigator) {

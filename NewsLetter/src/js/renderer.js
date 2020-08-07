@@ -1,7 +1,7 @@
 import Controller from "./controller.js";
 import News from "../model/newsModel.js";
 
-export default function Renderer() {
+export default function Renderer(controller) {
   /**
    * @since 1.0.0
    * @author Sergio Segaty <sergio.segaty@gmail.com>
@@ -67,9 +67,7 @@ export default function Renderer() {
 
     let buttonFav = document.createElement("div");
     buttonFav.setAttribute("class", "buttons");
-    buttonFav.addEventListener("click", e =>
-      new Controller("").saveToDb(article)
-    );
+    buttonFav.addEventListener("click", e => controller.saveToDb(article));
 
     let iconFav = document.createElement("i");
     iconFav.setAttribute("class", "fa fa-heart");
@@ -90,19 +88,64 @@ export default function Renderer() {
     return footer;
   };
 
-  const renderCountryOptions = countryList => {
+  /**
+   * @since 1.0.0
+   * @author Heitor Ugarte <heitorsilveirafurb@gmail.com>
+   * Renders the country options list to populate the dropdown on the main page.
+   * Also adds an 'onchange' eventListener to update the article list when
+   * selecting a new country from the dropdown.
+   */
+  const renderCountryOptions = () => {
     let dropdownPaises = document.getElementById("ddPaises");
-    let countryKeys = Object.keys(countryList);
+    let countryKeys = Object.keys(controller.paises);
 
     for (let index = 0; index < countryKeys.length; index++) {
       const sigla = countryKeys[index];
-      const pais = countryList[sigla];
+      const pais = controller.paises[sigla];
       let option = document.createElement("option");
       option.appendChild(document.createTextNode(pais));
       option.value = sigla;
       dropdownPaises.appendChild(option);
-      dropdownPaises.onchange = ctrl.refreshArticleList(dropdownPaises.value);
     }
+    dropdownPaises.addEventListener("change", () => {
+      dropdownPaises.value == "all"
+        ? (document.getElementById("inputQuery").style.display = "block")
+        : (document.getElementById("inputQuery").style.display = "none");
+      controller.refreshArticleList(dropdownPaises.value);
+    });
+  };
+
+  /**
+   * @since 1.0.0
+   * @author Heitor Ugarte <heitorsilveirafurb@gmail.com>
+   * Method used to add an event listener on the text input component
+   * and set the default display style to none, since the deafult value
+   * for the country dropdown is "Brazil" and querys are only allowed
+   * when using the "Everything" option.
+   * As for the listener itself, when any button is pressed and the text component
+   * is focused, it checks if the pressed key equals the enter key (keyCode 13),
+   * if so, refreshes the article list based on the query informed.
+   */
+  const createQueryListener = () => {
+    let inputQuery = document.getElementById("inputQuery");
+    inputQuery.style.display = "none";
+    inputQuery.onkeydown = e => {
+      if (e.keyCode == 13) {
+        controller.refreshArticleList(
+          document.getElementById("ddPaises").value
+        );
+      }
+    };
+  };
+
+  /**
+   * @since 1.0.0
+   * @author Heitor Ugarte <heitorsilveirafurb@gmail.com>
+   * Returns the current value (query) on the input component.
+   * @returns {string} query value
+   */
+  const getQuery = () => {
+    return document.getElementById("inputQuery").value;
   };
 
   /**
@@ -121,9 +164,23 @@ export default function Renderer() {
     return fixedDate;
   };
 
+  /**
+   * @since 1.0.0
+   * @author Heitor Ugarte <heitorsilveirafurb@gmail.com>
+   * Returns the current dropdown value (country option) to use as a parameter
+   * on the API request (country key, ISO-3166).
+   * @returns {string} country ISO-3166
+   */
+  const getSelectedCountry = () => {
+    return document.getElementById("ddPaises").value;
+  };
+
   return {
     renderCard,
     renderFooter,
-    renderCountryOptions
+    renderCountryOptions,
+    getSelectedCountry,
+    createQueryListener,
+    getQuery
   };
 }

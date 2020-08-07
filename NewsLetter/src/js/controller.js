@@ -19,14 +19,14 @@ export default class Controller {
   };
 
   paises = {
-    all: "All",
+    br: "Brasil",
+    all: "Everything",
     ae: "United Arab Emirates",
     ar: "Argentina",
     at: "Austria",
     au: "Australia",
     be: "Belgium",
     bg: "Bulgaria",
-    br: "Brasil",
     ca: "Canada",
     ch: "Switzerland",
     cn: "China",
@@ -78,6 +78,7 @@ export default class Controller {
 
   constructor() {
     this.route = this.routes[window.location.hash];
+    this.startController();
   }
 
   /**
@@ -94,14 +95,14 @@ export default class Controller {
     let app = new App();
     app.registerWorker();
 
-    let body = document.querySelector("body");
+    let body = document.querySelector("main");
 
-    Renderer().renderCountryOptions(this.paises);
-
-    let newsList = await this.getData("us");
+    Renderer(this).renderCountryOptions();
+    Renderer(this).createQueryListener();
+    let newsList = await this.getData(Renderer(this).getSelectedCountry());
 
     newsList.forEach(article => {
-      let card = Renderer().renderCard(article);
+      let card = Renderer(this).renderCard(article);
       body.append(card);
     });
   };
@@ -130,10 +131,13 @@ export default class Controller {
   };
 
   refreshArticleList = country => {
-    this.getData(country);
-    newsList.forEach(article => {
-      let card = Renderer().renderCard(article);
-      body.append(card);
+    this.getData(country).then(newsList => {
+      let main = document.getElementsByTagName("main")[0];
+      main.innerHTML = "";
+      newsList.forEach(article => {
+        let card = Renderer(this).renderCard(article);
+        main.append(card);
+      });
     });
   };
 
@@ -189,8 +193,7 @@ export default class Controller {
   };
 }
 
-let ctrl = new Controller();
-ctrl.startController();
+new Controller();
 // ctrl.startApiTests();
 // ctrl.startDAOTests();
 // ctrl.startsRenderTests();
