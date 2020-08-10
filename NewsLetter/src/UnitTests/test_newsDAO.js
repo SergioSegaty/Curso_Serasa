@@ -1,4 +1,4 @@
-import { NewsDB } from '../js/newsDAO.js';
+import { NewsDB } from '../js/IndexedDB.js';
 
 const db = new NewsDB('DbTeste', 'TableTeste');
 

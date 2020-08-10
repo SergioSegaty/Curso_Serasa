@@ -1,4 +1,4 @@
-import { NewsAPI } from "../js/fetchNews.js"
+import { NewsAPI } from "../js/FetchNews.js"
 
 const op = {
     'everything': 'everything?',

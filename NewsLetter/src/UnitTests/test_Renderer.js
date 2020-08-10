@@ -1,5 +1,5 @@
-import Renderer from "../js/renderer.js";
-import News from "../model/newsModel.js";
+import Renderer from "../js/View.js";
+import News from "../model/News.js";
 
 let mockArticle = {
     source: {
