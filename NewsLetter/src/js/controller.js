@@ -22,7 +22,6 @@ export default class Controller {
         this.paises = new Paises().paises;
         this.route = this.routes[window.location.hash];
         this.startController();
-
     }
 
     /**
@@ -32,7 +31,7 @@ export default class Controller {
      * Call this function to start the magic.
      * The Api is set to get the Top 20 articles of the target country, in this case Us.
      */
-    startController = async() => {
+    startController = async () => {
         let db = new NewsDB("NewsDB", "FavNews");
         db.startDB();
 
@@ -47,7 +46,7 @@ export default class Controller {
         let optionsSelect = Renderer(this).renderCountryOptions(defaultCountry);
         //Renderer(this).createQueryListener();
 
-        let newsList = await this.getData(defaultCountry);
+        let newsList = await this.getData('top', defaultCountry);
         let arrayCards = [];
 
         newsList.forEach(article => {
@@ -55,7 +54,7 @@ export default class Controller {
             arrayCards.push(card);
         });
 
-        ReactDOM.render(optionsSelect, header);
+        ReactDOM.render(optionsSelect, mainHeader);
         ReactDOM.render(arrayCards, main);
     };
 
@@ -63,7 +62,7 @@ export default class Controller {
      * Manages to separate the Index Route from the Favorites Route and direct them
      * to their respectives APIs.
      */
-    getData = async country => {
+    getData = async (option, query) => {
         let articleList;
         let dao;
         try {
@@ -72,7 +71,10 @@ export default class Controller {
                 articleList = await dao.getAllNews();
             } else if (this.route === "index") {
                 dao = new NewsAPI();
-                articleList = await dao.getTop(country);
+                if (option === 'top')
+                    articleList = await dao.getTop(query);
+                else
+                    articleList = await dao.getAll(query);
             }
         } catch (e) {
             console.log("Error choosing routes");
@@ -82,14 +84,16 @@ export default class Controller {
         return articleList;
     };
 
-    refreshArticleList = country => {
-        this.getData(country).then(newsList => {
-            let main = document.getElementsByTagName("main")[0];
-            main.innerHTML = "";
+    refreshArticleList = (option, country) => {
+        this.getData(option, country).then(newsList => {
+            let main = document.getElementById("main");
+            ReactDOM.unmountComponentAtNode(main);
+            let articleList = [];
             newsList.forEach(article => {
                 let card = Renderer(this).renderCard(article);
-                main.append(card);
+                articleList.push(card);
             });
+            ReactDOM.render(articleList, main);
         });
     };
 
@@ -144,8 +148,3 @@ export default class Controller {
         rendererTests.Test_RenderFooter();
     };
 }
-
-new Controller();
-// ctrl.startApiTests();
-// ctrl.startDAOTests();
-// ctrl.startsRenderTests();

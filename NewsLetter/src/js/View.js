@@ -22,16 +22,16 @@ export default function Renderer(controller) {
             }
         });
 
-        let p = React.createElement('p', null, article.description)
+        let p = React.createElement('p', { key: `p${article.title}` }, article.description);
 
-        let dateTime = React.createElement('h4', null, article.publishedAt)
+        let dateTime = React.createElement('h4', { key: article.title }, article.publishedAt)
 
         let content = React.createElement('div', { className: 'content' }, [dateTime, p]);
 
         let footer = renderFooter(article);
 
         let body = React.createElement(
-            'div', { className: 'card', key: article.publishedAt }, [row, auth, img, content, footer]
+            'div', { className: 'card', key: article.title }, [row, auth, img, content, footer]
         );
 
         return body;
@@ -45,15 +45,15 @@ export default function Renderer(controller) {
      */
     const renderFooter = article => {
 
-        let iconFav = React.createElement('i', { className: 'fa fa-heart' })
+        let iconFav = React.createElement('i', { className: 'fa fa-heart', key: `if${article.title}` })
         let buttonFav = React.createElement('div', { className: 'buttons', onClick: (e) => controller.saveToDb(article) }, [iconFav])
 
-        let iconTwit = React.createElement('div', { className: 'fa fa-twitter' });
+        let iconTwit = React.createElement('i', { className: 'fa fa-twitter', key: `it${article.title}` });
         let buttonTwit = React.createElement('div', { className: 'buttons', onClick: (e) => clickTwitter(article) }, [iconTwit]);
 
-        let socialB = React.createElement('div', { className: 'socialB' }, [buttonFav, buttonTwit])
+        let socialB = React.createElement('div', { className: 'socialB', key: `sb${article.title}` }, [buttonFav, buttonTwit]);
 
-        let footer = React.createElement('div', { className: 'footer' }, [socialB])
+        let footer = React.createElement('div', { className: 'footer', key: `foot${article.title}` }, [socialB]);
 
         return footer;
     };
@@ -66,43 +66,32 @@ export default function Renderer(controller) {
      * selecting a new country from the dropdown.
      */
     const renderCountryOptions = (country) => {
-        //let dropdownPaises = document.getElementById("ddPaises");
-        //option.value = sigla;
-        //let option = document.createElement("option");
-        //option.appendChild(document.createTextNode(pais));
-        //dropdownPaises.appendChild(option);
-        // dropdownPaises.addEventListener("change", () => {
-        //     dropdownPaises.value == "all" ?
-        //         (document.getElementById("inputQuery").style.display = "block") :
-        //         (document.getElementById("inputQuery").style.display = "none");
-        //     controller.refreshArticleList(dropdownPaises.value);
-        // });
-
         let countryKeys = Object.keys(controller.paises);
 
         let optionsList = [];
 
         for (let index = 0; index < countryKeys.length; index++) {
             let props = {};
+
             const sigla = countryKeys[index];
             const pais = controller.paises[sigla];
+
             props['value'] = sigla
             props['key'] = index
+
             if (sigla === country) props.defaultValue = "br";
             optionsList.push(React.createElement('option', props, pais));
         }
 
         let dropdownPaises = React.createElement('select', {
-            onChange: () => {
-                dropdownPaises.value == "all" ?
+            onChange: (e) => {
+                e.target.value == "all" ?
                     (document.getElementById("inputQuery").style.display = "block") :
                     (document.getElementById("inputQuery").style.display = "none");
-                controller.refreshArticleList(dropdownPaises.value);
+                controller.refreshArticleList('all', e.target.value);
             },
             id: 'ddPaises',
         }, [optionsList]);
-
-        let selectPais = document.getElementById('selectPais');
 
         let inputQuery = React.createElement('input', {
             id: 'inputQuery',
@@ -110,10 +99,13 @@ export default function Renderer(controller) {
             placeholder: 'Search...',
             onKeyDown: (e) => {
                 if (e.keyCode == 13) {
-                    controller.refreshArticleList(
-                        document.getElementById("ddPaises").value
+                    controller.refreshArticleList('all',
+                        document.getElementById("inputQuery").value
                     );
                 }
+            },
+            style: {
+                display: 'none'
             }
         });
         return [dropdownPaises, inputQuery];
