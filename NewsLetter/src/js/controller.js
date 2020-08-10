@@ -36,16 +36,27 @@ export default class Controller {
         let db = new NewsDB("NewsDB", "FavNews");
         db.startDB();
 
-        let body = document.querySelector("main");
+        let main = document.querySelector("#main");
+        let defaultCountry = 'br';
 
-        Renderer(this).renderCountryOptions();
-        Renderer(this).createQueryListener();
-        let newsList = await this.getData(Renderer(this).getSelectedCountry());
+        let mainHeader = document.querySelector('#mainHeader');
+
+        let header = React.createElement('div', { className: 'header', id: 'selectPais' });
+        ReactDOM.render(header, mainHeader)
+
+        let optionsSelect = Renderer(this).renderCountryOptions(defaultCountry);
+        //Renderer(this).createQueryListener();
+
+        let newsList = await this.getData(defaultCountry);
+        let arrayCards = [];
 
         newsList.forEach(article => {
             let card = Renderer(this).renderCard(article);
-            body.append(card);
+            arrayCards.push(card);
         });
+
+        ReactDOM.render(optionsSelect, header);
+        ReactDOM.render(arrayCards, main);
     };
 
     /**

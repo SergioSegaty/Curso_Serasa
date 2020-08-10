@@ -8,45 +8,31 @@ export default function Renderer(controller) {
      * Takes a News object as parameter and returns a Rendered Card populated with the news.
      * @param {News} article
      */
-    const renderCard = article => {
-        let body = document.createElement("div");
-        body.setAttribute("class", "card");
+    const renderCard = (article) => {
+        let title = React.createElement('h2', { className: 'title' }, article.title);
 
-        let row = document.createElement("div");
-        row.setAttribute("class", "row");
+        let row = React.createElement('div', { className: 'row' }, title);
 
-        let title = document.createElement("h2");
-        title.setAttribute("class", "title");
-        title.innerHTML = article.title;
+        let auth = React.createElement('span', { className: 'auth' }, article.author);
 
-        row.append(title);
-        body.append(row);
+        let img = React.createElement('div', {
+            className: 'img',
+            style: {
+                backgroundImage: "url(" + article.imageUrl + ")"
+            }
+        });
 
-        let auth = document.createElement("span");
-        auth.setAttribute("class", "auth");
-        auth.innerHTML = article.author;
+        let p = React.createElement('p', null, article.description)
 
-        body.append(auth);
+        let dateTime = React.createElement('h4', null, article.publishedAt)
 
-        let img = document.createElement("div");
-        img.setAttribute("class", "img");
-        img.style.backgroundImage = "url(" + article.imageUrl + ")";
-        body.append(img);
-
-        let content = document.createElement("div");
-        content.setAttribute("class", "content");
-
-        let dateTime = document.createElement("h4");
-        dateTime.innerHTML = cleanDate(article.publishedAt);
-        content.append(dateTime);
-
-        let p = document.createElement("p");
-        p.innerHTML = article.description;
-        content.append(p);
-        body.append(content);
+        let content = React.createElement('div', { className: 'content' }, [dateTime, p]);
 
         let footer = renderFooter(article);
-        body.append(footer);
+
+        let body = React.createElement(
+            'div', { className: 'card', key: article.publishedAt }, [row, auth, img, content, footer]
+        );
 
         return body;
     };
@@ -58,32 +44,16 @@ export default function Renderer(controller) {
      * @param {News} article
      */
     const renderFooter = article => {
-        let footer = document.createElement("div");
-        footer.setAttribute("class", "footer");
 
-        let socialB = document.createElement("div");
-        socialB.setAttribute("class", "socialB");
-        footer.append(socialB);
+        let iconFav = React.createElement('i', { className: 'fa fa-heart' })
+        let buttonFav = React.createElement('div', { className: 'buttons', onClick: (e) => controller.saveToDb(article) }, [iconFav])
 
-        let buttonFav = document.createElement("div");
-        buttonFav.setAttribute("class", "buttons");
-        buttonFav.addEventListener("click", e => controller.saveToDb(article));
+        let iconTwit = React.createElement('div', { className: 'fa fa-twitter' });
+        let buttonTwit = React.createElement('div', { className: 'buttons', onClick: (e) => clickTwitter(article) }, [iconTwit]);
 
-        let iconFav = document.createElement("i");
-        iconFav.setAttribute("class", "fa fa-heart");
-        buttonFav.append(iconFav);
+        let socialB = React.createElement('div', { className: 'socialB' }, [buttonFav, buttonTwit])
 
-        let buttonTwit = document.createElement("div");
-        buttonTwit.setAttribute("class", "buttons");
-        buttonTwit.addEventListener("click", e => clickTwitter(article));
-
-        let iconTwit = document.createElement("div");
-        iconTwit.setAttribute("class", "fa fa-twitter");
-        buttonTwit.append(iconTwit);
-
-        socialB.append(buttonFav);
-        socialB.append(buttonTwit);
-        footer.append(socialB);
+        let footer = React.createElement('div', { className: 'footer' }, [socialB])
 
         return footer;
     };
@@ -95,24 +65,58 @@ export default function Renderer(controller) {
      * Also adds an 'onchange' eventListener to update the article list when
      * selecting a new country from the dropdown.
      */
-    const renderCountryOptions = () => {
-        let dropdownPaises = document.getElementById("ddPaises");
+    const renderCountryOptions = (country) => {
+        //let dropdownPaises = document.getElementById("ddPaises");
+        //option.value = sigla;
+        //let option = document.createElement("option");
+        //option.appendChild(document.createTextNode(pais));
+        //dropdownPaises.appendChild(option);
+        // dropdownPaises.addEventListener("change", () => {
+        //     dropdownPaises.value == "all" ?
+        //         (document.getElementById("inputQuery").style.display = "block") :
+        //         (document.getElementById("inputQuery").style.display = "none");
+        //     controller.refreshArticleList(dropdownPaises.value);
+        // });
+
         let countryKeys = Object.keys(controller.paises);
 
+        let optionsList = [];
+
         for (let index = 0; index < countryKeys.length; index++) {
+            let props = {};
             const sigla = countryKeys[index];
             const pais = controller.paises[sigla];
-            let option = document.createElement("option");
-            option.appendChild(document.createTextNode(pais));
-            option.value = sigla;
-            dropdownPaises.appendChild(option);
+            props['value'] = sigla
+            props['key'] = index
+            if (sigla === country) props.defaultValue = "br";
+            optionsList.push(React.createElement('option', props, pais));
         }
-        dropdownPaises.addEventListener("change", () => {
-            dropdownPaises.value == "all" ?
-                (document.getElementById("inputQuery").style.display = "block") :
-                (document.getElementById("inputQuery").style.display = "none");
-            controller.refreshArticleList(dropdownPaises.value);
+
+        let dropdownPaises = React.createElement('select', {
+            onChange: () => {
+                dropdownPaises.value == "all" ?
+                    (document.getElementById("inputQuery").style.display = "block") :
+                    (document.getElementById("inputQuery").style.display = "none");
+                controller.refreshArticleList(dropdownPaises.value);
+            },
+            id: 'ddPaises',
+        }, [optionsList]);
+
+        let selectPais = document.getElementById('selectPais');
+
+        let inputQuery = React.createElement('input', {
+            id: 'inputQuery',
+            type: 'text',
+            placeholder: 'Search...',
+            onKeyDown: (e) => {
+                if (e.keyCode == 13) {
+                    controller.refreshArticleList(
+                        document.getElementById("ddPaises").value
+                    );
+                }
+            }
         });
+        return [dropdownPaises, inputQuery];
     };
 
     /**
@@ -172,7 +176,8 @@ export default function Renderer(controller) {
      * @returns {string} country ISO-3166
      */
     const getSelectedCountry = () => {
-        return document.getElementById("ddPaises").value;
+        let a = document.getElementById("ddPaises").value;
+        return
     };
 
     return {
