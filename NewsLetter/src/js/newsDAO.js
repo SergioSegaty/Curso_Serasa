@@ -44,6 +44,8 @@ export class NewsDB {
         }
 
         req.onupgradeneeded = (e) => {
+            let db = e.target.result;
+
             console.log('Atualizando o DB: ' + this.dbName);
 
             var store = db.createObjectStore(this.tableName, {
