@@ -1,6 +1,5 @@
 export class Paises {
     paises = {
-
         br: "Brasil",
         all: "Everything",
         ae: "United Arab Emirates",

@@ -7,12 +7,11 @@ export default class News {
         this.description = article.description;
         this.url = article.url;
         this.imageUrl = article.urlToImage;
-        this.publishedAt = article.publishedAt;
+        this.publishedAt = this.cleanDate(article.publishedAt);
         this.content = article.content;
 
         this.validation()
     }
-
 
     validation = () => {
         if (this.imageUrl == null) {
@@ -22,4 +21,21 @@ export default class News {
         this.name ? this.name : this.title;
         this.title ? this.title : this.name;
     }
+
+    /**
+     * @since 1.0.0
+     * @author Sergio Segaty <sergio.segaty@gmail.com>
+     * Takes the Date and Parses it to a more readable string.
+     * @param {string} date
+     */
+    cleanDate = date => {
+        let key = "-";
+        let fixedDate = date
+            .replace("Z", "")
+            .replace(/[/-]/g, char => key[char] || "/")
+            .split("T")
+            .join(" - ");
+        return fixedDate;
+    };
+
 }

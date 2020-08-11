@@ -88,7 +88,7 @@ export default function Renderer(controller) {
                 e.target.value == "all" ?
                     (document.getElementById("inputQuery").style.display = "block") :
                     (document.getElementById("inputQuery").style.display = "none");
-                controller.refreshArticleList('all', e.target.value);
+                controller.refreshArticleList('top', e.target.value);
             },
             id: 'ddPaises',
         }, [optionsList]);
@@ -144,21 +144,6 @@ export default function Renderer(controller) {
         return document.getElementById("inputQuery").value;
     };
 
-    /**
-     * @since 1.0.0
-     * @author Sergio Segaty <sergio.segaty@gmail.com>
-     * Takes the Date and Parses it to a more readable string.
-     * @param {string} date
-     */
-    const cleanDate = date => {
-        let key = "-";
-        let fixedDate = date
-            .replace("Z", "")
-            .replace(/[/-]/g, char => key[char] || "/")
-            .split("T")
-            .join(" - ");
-        return fixedDate;
-    };
 
     /**
      * @since 1.0.0

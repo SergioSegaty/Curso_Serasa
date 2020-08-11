@@ -31,7 +31,7 @@ export default class Controller {
      * Call this function to start the magic.
      * The Api is set to get the Top 20 articles of the target country, in this case Us.
      */
-    startController = async () => {
+    startController = async() => {
         let db = new NewsDB("NewsDB", "FavNews");
         db.startDB();
 
@@ -44,7 +44,6 @@ export default class Controller {
         ReactDOM.render(header, mainHeader)
 
         let optionsSelect = Renderer(this).renderCountryOptions(defaultCountry);
-        //Renderer(this).createQueryListener();
 
         let newsList = await this.getData('top', defaultCountry);
         let arrayCards = [];
@@ -62,7 +61,7 @@ export default class Controller {
      * Manages to separate the Index Route from the Favorites Route and direct them
      * to their respectives APIs.
      */
-    getData = async (option, query) => {
+    getData = async(option, query) => {
         let articleList;
         let dao;
         try {
@@ -87,7 +86,6 @@ export default class Controller {
     refreshArticleList = (option, country) => {
         this.getData(option, country).then(newsList => {
             let main = document.getElementById("main");
-            ReactDOM.unmountComponentAtNode(main);
             let articleList = [];
             newsList.forEach(article => {
                 let card = Renderer(this).renderCard(article);
