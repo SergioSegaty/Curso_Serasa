@@ -1,7 +1,8 @@
-'use strict'
+//'use strict'
 
 const FILES_TO_CACHE = [
-    '/index.html',
+    'index.html',
+    './src/styles/style.css',
 ]
 const CACHE_NAME = 'NewsCache';
 
