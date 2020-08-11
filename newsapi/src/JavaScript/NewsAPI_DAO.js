@@ -24,8 +24,6 @@ let apiKey = "&apiKey=74b3fd2332654343a940903d9a1f267c";
  * NewsApi controls the fetch and manipulation of the News Data.
  */
 export class NewsAPI {
-    constructor() {}
-
     /**
      * @since 1.0.0
      * @author Sergio Segaty <sergio.segaty@gmail.com>
@@ -48,7 +46,6 @@ export class NewsAPI {
                 break;
             default:
                 throw "getUrl() did not recieve an option";
-                break;
         }
 
         return url + apiKey;
@@ -74,20 +71,25 @@ export class NewsAPI {
      * Asks for a country, which should be a Acronym of the target country, ie: us, br, en, ca.
      * @param {String} country
      */
-    getTop = async country => {
+    getTop = country => {
         let url;
-        if (country != "all") {
-            url = this.getUrl(op.top, country);
+        if (!country) {
+            url = this.getUrl(op.top, 'br');
         } else {
-            let query = Renderer(this).getQuery();
-            if (query != "") {
-                url = this.getUrl(op.everything, query);
-            } else {
-                url = this.getUrl(op.everything, "a");
-            }
+            url = this.getUrl(op.top, country);
         }
-        let req = await fetch(url);
-        let result = await req.json();
-        return transformsToNewsArray(result.articles);
-    };
-}
+        // let query = Renderer(this).getQuery();
+        // if (query != "") {
+        // } 
+
+        return new Promise(async resolve => {
+            try{
+                let req = await fetch(url);
+                let result = await req.json();
+                resolve(result);
+            }catch(e){
+                throw e;
+            }
+        })
+    }
+};
