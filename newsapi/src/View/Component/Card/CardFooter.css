@@ -1,0 +1,47 @@
+.footer {
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.socialB {
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+    height: 20%;
+}
+
+.buttons {
+    border-radius: 6px;
+    height: 25px;
+    width: 25px;
+    margin: 10px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fa-heart {
+    color: #c5c2c7;
+}
+
+.fa-twitter {
+    color: #c5c2c7;
+}
+
+.buttons:hover .fa-heart {
+    color: red;
+    border: none;
+    outline: none;
+}
+
+.buttons:hover .fa-twitter {
+    color: #213072;
+    border: none;
+    outline: none
+}
