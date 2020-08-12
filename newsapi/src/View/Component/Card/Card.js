@@ -13,6 +13,7 @@ class Card extends React.Component {
   }
 
   render() {
+    debugger;
     return (
 
       <div className="card">

@@ -51,32 +51,30 @@ class App extends React.Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      item: {}
     };
   }
 
   componentDidMount() {
-    new NewsAPI().getTop()
-      .then(
-        (result) => {
-          console.log(result);
-          this.setState({
-            isLoaded: true,
-            items: result,
-          });
-          debugger;
-        }
-        // (error) => {
-        //   this.setState({
-        //     isLoaded: true,
-        //     error
-        //   });
-        // }
-      )
+    new NewsAPI().getTop().then(
+      (result) => {
+        console.log(result);
+        this.state.isLoaded = true;
+        this.state.item = result[1];
+        debugger;
+      }
+      // (error) => {
+      //   this.setState({
+      //     isLoaded: true,
+      //     error
+      //   });
+      // }
+    )
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    debugger;
+    const { error, isLoaded, item } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>
     } else if (isLoaded) {
@@ -85,7 +83,7 @@ class App extends React.Component {
       return <div className="App">
         <header className="App-header">
           {
-            <Card news={items[0]} />
+            <Card news={item} />
           }
         </header>
       </div>
