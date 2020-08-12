@@ -37,27 +37,60 @@ import { NewsAPI } from "./JavaScript/NewsAPI_DAO";
 //   content: 'Content Teste'
 // }];npm
 
-const getNews = async () => {
-  let api = new NewsAPI();
+// const getNews = async () => {
+//   let api = new NewsAPI();
 
-  let list = await api.getTop('br');
-  debugger;
-  return list;
-}
+//   let list = await api.getTop('br');
+//   debugger;
+//   return list;
+// }
 
-function App() {
-  let news = getNews();
-  return (
-    <div className="App">
-      <header className="App-header">
-        {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      items: []
+    };
+  }
 
-          <Card news={news} />
-
+  componentDidMount() {
+    new NewsAPI().getTop()
+      .then(
+        (result) => {
+          console.log(result);
+          this.setState({
+            isLoaded: true,
+            items: result,
+          });
+          debugger;
         }
-      </header>
-    </div>
-  );
+        // (error) => {
+        //   this.setState({
+        //     isLoaded: true,
+        //     error
+        //   });
+        // }
+      )
+  }
+
+  render() {
+    const { error, isLoaded, items } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>
+    } else if (isLoaded) {
+      return <div>Loading...</div>
+    } else {
+      return <div className="App">
+        <header className="App-header">
+          {
+            <Card news={items[0]} />
+          }
+        </header>
+      </div>
+    }
+  }
 }
 
 export default App;

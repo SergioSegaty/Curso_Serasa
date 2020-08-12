@@ -3,34 +3,38 @@ import './Card.css';
 import CardFooter from "./CardFooter.js";
 import News from '../../../Models/News.js';
 
-const toObjectNews = (props) => {
-  let object = new News(props);
-  return object;
-}
 
-function Card(props) {
-  debugger;
-  let news = toObjectNews(props.news)
-  debugger;
-  return (
-    <div className="card">
-      <div className="row">
-        <h2 className="title">{news.title}</h2>
-      </div>
+class Card extends React.Component {
+  constructor(props) {
+    super(props);
 
-      <span className="auth"> {news.author} </span>
-      <div className="content">
-        <div className="img">
-          <img src={news.imageUrl}></img>
+    this.article = props
+
+  }
+
+  render() {
+    return (
+
+      <div className="card">
+        <div className="row">
+          <h2 className="title">{this.article.title}</h2>
         </div>
-        <h4> {news.publishedAt}</h4>
 
-        <p> {news.description} </p>
+        <span className="auth"> {this.article.author} </span>
+
+        <div className="content">
+          <div className="img">
+            <img src={this.article.imageUrl}></img>
+          </div>
+          <h4> {this.article.publishedAt}</h4>
+
+          <p> {this.article.description} </p>
+        </div>
+
+        <CardFooter news={this.article} />
       </div>
-
-      <CardFooter news={news} />
-    </div>
-  );
+    )
+  }
 }
 
 export default Card;

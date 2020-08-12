@@ -72,6 +72,7 @@ export class NewsAPI {
      * @param {String} country
      */
     getTop = country => {
+        debugger;
         let url;
         if (!country) {
             url = this.getUrl(op.top, 'br');
@@ -86,7 +87,7 @@ export class NewsAPI {
             try{
                 let req = await fetch(url);
                 let result = await req.json();
-                resolve(result);
+                resolve(result.articles);
             }catch(e){
                 throw e;
             }
