@@ -18,6 +18,7 @@
 .card {
     padding: 4px;
     margin-bottom: 25px;
+    width: 55%;
 }
 
 .card h4 {
@@ -26,17 +27,19 @@
 
 .card .img {
     width: 100%;
-    height: 200px;
+    height: 300px;
     border-bottom: black;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     border-radius: 4px;
+    display: flex;
+    justify-content: center;
 }
 
 .card img{
     display: block;
-    width: 100%;
+    width: 80%;
     max-height: 100%;
 }
 

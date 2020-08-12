@@ -30,7 +30,7 @@
     color: #c5c2c7;
 }
 
-.fa-twitter {
+.fa-angle-up {
     color: #c5c2c7;
 }
 
@@ -40,7 +40,7 @@
     outline: none;
 }
 
-.buttons:hover .fa-twitter {
+.buttons:hover .fa-angle-up {
     color: #213072;
     border: none;
     outline: none

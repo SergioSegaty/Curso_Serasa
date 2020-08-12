@@ -1,21 +1,16 @@
 import React from "react";
-import './Card.css';
+import "./Card.css";
 import CardFooter from "./CardFooter.js";
-import News from '../../../Models/News.js';
-
+import News from "../../../Models/News.js";
 
 class Card extends React.Component {
   constructor(props) {
     super(props);
-
-    this.article = props
-
+    this.article = new News(this.props.news);
   }
 
   render() {
-    debugger;
     return (
-
       <div className="card">
         <div className="row">
           <h2 className="title">{this.article.title}</h2>
@@ -25,16 +20,16 @@ class Card extends React.Component {
 
         <div className="content">
           <div className="img">
-            <img src={this.article.imageUrl}></img>
+            <img src={this.article.imageUrl} alt="News"></img>
           </div>
           <h4> {this.article.publishedAt}</h4>
 
           <p> {this.article.description} </p>
         </div>
 
-        <CardFooter news={this.article} />
+        <CardFooter news={this.article} controller={this.props.controller} />
       </div>
-    )
+    );
   }
 }
 

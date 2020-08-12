@@ -12,6 +12,7 @@ export class NewsDB {
     constructor(dbName, tableName) {
         this.dbName = dbName;
         this.tableName = tableName;
+        this.startDB();
     }
 
     /**
@@ -48,6 +49,8 @@ export class NewsDB {
                 autoIncrement: true
             });
 
+            store.createIndex('title', 'title', {unique: true});
+
             store.onsuccess = () => {
                 console.log("Tabela : " + this.tableName + "  foi criada com sucesso");
             };
@@ -67,6 +70,7 @@ export class NewsDB {
         let req = await this.connection(this.dbName);
 
         req.onsuccess = e => {
+            debugger;
             let db = e.target.result;
             let store = db
                 .transaction(this.tableName, "readwrite")
@@ -86,7 +90,7 @@ export class NewsDB {
         };
 
         req.onerror = e => {
-            console.log("Não foi possível abrir o Db" + dbName);
+            console.log("Não foi possível abrir o Db" + this.dbName);
         };
     };
 

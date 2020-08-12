@@ -1,0 +1,26 @@
+#NavMenu {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: 0px 18px 10px -10px rgb(236, 144, 5);
+  margin-bottom: 10px;
+  font-size: medium;
+}
+
+#NavMenu ul {
+  list-style-type: none;
+  display: flex;
+}
+
+ul li {
+  margin-right: 15px;
+}
+
+#NavMenu a {
+  text-decoration: underline;
+  color: white;
+}
+
+#NavMenu a:hover {
+  color: #e7650e;
+}
