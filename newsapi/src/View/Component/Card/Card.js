@@ -1,12 +1,11 @@
 import React from "react";
 import "./Card.css";
 import CardFooter from "./CardFooter.js";
-import News from "../../../Models/News.js";
 
 class Card extends React.Component {
   constructor(props) {
     super(props);
-    this.article = new News(this.props.news);
+    this.article = props.news;
   }
 
   render() {

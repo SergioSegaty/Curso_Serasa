@@ -1,66 +1,95 @@
 import React from "react";
-//import logo from "./logo.svg";
 import "./App.css";
 import Card from "./View/Component/Card/Card";
-import { NewsAPI } from "./JavaScript/NewsAPI_DAO";
 import NavBar from "./View/Component/NavBar/NavBar";
+import { Controller } from "JavaScript/Controller";
+import { NewsAPI } from "./JavaScript/NewsAPI_DAO";
+import { NewsDB } from "./JavaScript/IndexedDB_DAO";
+
+const IndexedDB = new NewsDB("NewsDB", "FavoriteNews");
+const Api = new NewsAPI();
+const controller = new Controller();
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.items = this.props.items
-    // this.state = {
-    //   error: null,
-    //   isLoaded: false,
-    //   items: []
-    // };
+    this.items = props.articles;
+
+    this.state = {
+      isLodaded: false,
+      error: null,
+      route: {},
+      search: {},
+      items: [],
+    };
   }
 
-  // componentDidMount() {
-  //   console.log(this.props.route);
-  //   new NewsAPI().getTop().then(
-  //     result => {
-  //       this.setState({
-  //         isLoaded: true,
-  //         items: result
-  //       });
-  //     },
-  //     error => {
-  //       this.setState({
-  //         isLoaded: true,
-  //         error
-  //       });
-  //     }
-  //   );
-  // }
+  componentDidMount() {
+    this.router();
+  }
+
+  procurarPais = (pais) => {
+    this.state.search = pais;
+    this.router("#top");
+  };
+
+  procurarQuery = (query) => {
+    this.state.search = query;
+    this.router("#all");
+  };
+
+  metodos = {
+    porPais: this.procurarPais,
+    porQuery: this.procurarQuery,
+  };
+
+  router = (newRoute) => {
+    let search = this.state.search;
+    let result;
+
+    switch (newRoute) {
+      case "#top":
+        result = Api.getTop(search);
+        break;
+      case "#all":
+        result = Api.getAll(search);
+        break;
+      case "#fav":
+        result = IndexedDB.getAllNews();
+        break;
+      default:
+        result = Api.getTop();
+        break;
+    }
+
+    result.then((result) => {
+      console.log(result);
+      this.setState({
+        items: result,
+        route: newRoute,
+      });
+    });
+  };
 
   render() {
-    console.log(this.items);
-    debugger;
-    // console.log('deu uma ');
-    // const { error, isLoaded, items } = this.state;
-    // if (error) {
-    //   return <div>Error: {error.message}</div>;
-    // } else if (!isLoaded) {
-    //   return <div>Loading...</div>;
-    // } else {
-    //   if(this.props.route === '#top'){
-    //     console.log('deu no app com rota');
-    //   }
-      return (
-        <div className="App">
-          <header className="App-header">
-            <NavBar controller={this.props.controller}></NavBar>
-          </header>
-          <div id="mainContainer">
-            {this.items.map((article, index) => (
-              <Card news={article} key={index} controller={this.props.controller} />
-            ))}
-          </div>
+    return (
+      <div className="App">
+        <header className="App-header">
+          <NavBar
+            metodos={this.metodos}
+            router={this.router}
+            route={this.state.route}
+            search={this.state.search}
+          ></NavBar>
+        </header>
+        <div id="mainContainer">
+          {this.state.items.map((article) => (
+            <Card news={article} key={article.title} controller={controller} />
+          ))}
         </div>
-      );
-    }
+      </div>
+    );
   }
-// }
+}
 
 export default App;

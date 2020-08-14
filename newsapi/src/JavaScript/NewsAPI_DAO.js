@@ -5,15 +5,6 @@ const op = {
   everything: "everything?",
   top: "top-headlines?",
 };
-const transformsToNewsArray = (articles) => {
-  let articlesList = [];
-
-  articles.forEach((a) => {
-    let newObj = new News(a);
-    articlesList.push(newObj);
-  });
-  return articlesList;
-};
 
 let baseUrl = "https://newsapi.org/v2/";
 let apiKey = "&apiKey=74b3fd2332654343a940903d9a1f267c";
@@ -58,13 +49,20 @@ export class NewsAPI {
    * @param {String} query
    */
   getAll = async (query) => {
-    if (!query) {
+    if (Object.keys(query).length < 1) {
       query = "a";
     }
     let url = this.getUrl(op.everything, query);
     let req = await fetch(url);
+    let newsList = [];
+    let list = await req.json();
 
-    return await req.json();
+    list.articles.map(article => {
+      newsList.push(new News(article));
+      return 'ok';
+    });
+
+    return newsList;
   };
 
   /**
@@ -73,25 +71,21 @@ export class NewsAPI {
    * Asks for a country, which should be a Acronym of the target country, ie: us, br, en, ca.
    * @param {String} country
    */
-  getTop = (country) => {
-    let url;
-    if (!country) {
-      url = this.getUrl(op.top, "br");
-    } else {
-      url = this.getUrl(op.top, country);
+  getTop = async (country) => {
+    if (!country || Object.keys(country).length < 1) {
+      country = "br";
     }
-    // let query = Renderer(this).getQuery();
-    // if (query != "") {
-    // }
-    
-    return new Promise(async (resolve) => {
-        try {
-          let req = await fetch(url);
-          let result = await req.json();
-          resolve(result.articles);
-        } catch (e) {
-          throw e;
-        }
+    let url = this.getUrl(op.top, country);
+    let req = await fetch(url);
+
+    let newsList = [];
+    let list = await req.json();
+
+    list.articles.map((article) => {
+      newsList.push(new News(article));
+      return 'ok';
     });
+
+    return newsList;
   };
 }
