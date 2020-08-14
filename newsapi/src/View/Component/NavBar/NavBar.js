@@ -32,10 +32,10 @@ class NavBar extends React.Component {
         </div>
         <ul>
           <li key='pais'>
-            <a href='#top' onClick={() => this.props.router('#top')}>Por País</a>
+            <a href='#top' onClick={() => this.props.metodos.porPais()}>Por País</a>
           </li>
           <li key='todos'>
-            <a href='#all' onClick={() => this.props.router('#all')}>Por Conteúdo </a>
+            <a href='#all' onClick={() => this.props.metodos.porQuery()}>Por Conteúdo </a>
           </li>
           <li key='favoritos'>
             <a href='#favoritos' onClick={() => this.props.router('#fav')}>Favoritos </a>

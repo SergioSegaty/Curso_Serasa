@@ -49,7 +49,7 @@ export class NewsAPI {
    * @param {String} query
    */
   getAll = async (query) => {
-    if (Object.keys(query).length < 1) {
+    if (!query ||Object.keys(query).length < 1) {
       query = "a";
     }
     let url = this.getUrl(op.everything, query);

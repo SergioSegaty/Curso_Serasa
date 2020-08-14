@@ -18,7 +18,6 @@ class App extends React.Component {
     this.state = {
       isLodaded: false,
       error: null,
-      route: {},
       search: {},
       items: [],
     };
@@ -43,11 +42,12 @@ class App extends React.Component {
     porQuery: this.procurarQuery,
   };
 
-  router = (newRoute) => {
+  router = (route) => {
+    debugger;
     let search = this.state.search;
     let result;
 
-    switch (newRoute) {
+    switch (route) {
       case "#top":
         result = Api.getTop(search);
         break;
@@ -63,10 +63,9 @@ class App extends React.Component {
     }
 
     result.then((result) => {
-      console.log(result);
       this.setState({
         items: result,
-        route: newRoute,
+        route: route,
       });
     });
   };
