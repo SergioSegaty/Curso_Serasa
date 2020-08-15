@@ -18,9 +18,9 @@ class App extends React.Component {
     this.state = {
       isLodaded: false,
       error: null,
-      search: {},
       items: [],
     };
+
   }
 
   componentDidMount() {
@@ -28,12 +28,12 @@ class App extends React.Component {
   }
 
   procurarPais = (pais) => {
-    this.state.search = pais;
+    this.search = pais;
     this.router("#top");
   };
 
   procurarQuery = (query) => {
-    this.state.search = query;
+    this.search = query
     this.router("#all");
   };
 
@@ -43,16 +43,14 @@ class App extends React.Component {
   };
 
   router = (route) => {
-    debugger;
-    let search = this.state.search;
     let result;
 
     switch (route) {
       case "#top":
-        result = Api.getTop(search);
+        result = Api.getTop(this.search);
         break;
       case "#all":
-        result = Api.getAll(search);
+        result = Api.getAll(this.search);
         break;
       case "#fav":
         result = IndexedDB.getAllNews();
