@@ -19,9 +19,13 @@ class CardFooter extends React.Component {
 
           <div
             className="buttons"
-            onClick={() => this.props.controller.FavNews(this.props.news)}
-          >
-            <FontAwesomeIcon icon={faHeart} />
+            onClick={(event) => {this.props.controller.FavNews(this.props.news, event)}}
+          >{ this.props.news.favorited === true &&
+            <FontAwesomeIcon icon={faHeart} className='faved' />
+          }
+          { this.props.news.favorited === false &&
+            <FontAwesomeIcon icon={faHeart}/>
+          }
           </div>
         </div>
       </div>

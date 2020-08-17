@@ -28,6 +28,7 @@
 
 .fa-heart {
     color: #c5c2c7;
+    pointer-events: none;
 }
 
 .fa-angle-up {
@@ -44,4 +45,8 @@
     color: #213072;
     border: none;
     outline: none
+}
+
+.fa-heart.faved {
+    color: red;
 }

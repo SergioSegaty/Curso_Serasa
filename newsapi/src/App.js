@@ -1,56 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Card from "./View/Component/Card/Card";
 import NavBar from "./View/Component/NavBar/NavBar";
 import { Controller } from "JavaScript/Controller";
 import { NewsAPI } from "./JavaScript/NewsAPI_DAO";
 import { NewsDB } from "./JavaScript/IndexedDB_DAO";
+import { connect } from "react-redux";
 
 const IndexedDB = new NewsDB("NewsDB", "FavoriteNews");
 const Api = new NewsAPI();
 const controller = new Controller();
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.items = props.articles;
+const App = (props) => {
+  let search = {};
 
-    this.state = {
-      isLodaded: false,
-      error: null,
-      items: [],
-    };
+  useEffect(() => {
+    if(props.items === undefined){
+      router();
+    }
+   })
 
-  }
-
-  componentDidMount() {
-    this.router();
-  }
-
-  procurarPais = (pais) => {
-    this.search = pais;
-    this.router("#top");
+  let procurarPais = (pais) => {
+    search = pais;
+    router("#top");
   };
 
-  procurarQuery = (query) => {
-    this.search = query
-    this.router("#all");
+  let procurarQuery = (query) => {
+    search = query;
+    router("#all");
   };
 
-  metodos = {
-    porPais: this.procurarPais,
-    porQuery: this.procurarQuery,
+  let metodos = {
+    porPais: procurarPais,
+    porQuery: procurarQuery,
   };
 
-  router = (route) => {
+  const router = (route) => {
     let result;
 
     switch (route) {
       case "#top":
-        result = Api.getTop(this.search);
+        result = Api.getTop(search);
         break;
       case "#all":
-        result = Api.getAll(this.search);
+        result = Api.getAll(search);
         break;
       case "#fav":
         result = IndexedDB.getAllNews();
@@ -61,32 +54,43 @@ class App extends React.Component {
     }
 
     result.then((result) => {
-      this.setState({
-        items: result,
-        route: route,
-      });
+      IndexedDB.getAllNews().then(favReults => {
+        favReults.map(fav => {
+          result.map(article => {
+              if(article.title === fav.title){
+                article.favorited = true;
+              }
+            })
+          })
+          props.dispatch({ type: "UPDATE", items: result, route: route, search: search });
+      })
     });
   };
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <NavBar
-            metodos={this.metodos}
-            router={this.router}
-            route={this.state.route}
-            search={this.state.search}
-          ></NavBar>
-        </header>
-        <div id="mainContainer">
-          {this.state.items.map((article) => (
-            <Card news={article} key={article.title} controller={controller} />
-          ))}
-        </div>
+  return (
+    <div className="App">
+      <header className="App-header">
+        <NavBar
+          metodos={metodos}
+          router={router}
+          route={props.route}
+        ></NavBar>
+      </header>
+      <div id="mainContainer">
+        {props.items && props.items.map((article) => (
+          <Card news={article} key={article.title} controller={controller} />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    route: state.route,
+    search: state.search,
+  };
+};
+
+export default connect(mapStateToProps)(App);

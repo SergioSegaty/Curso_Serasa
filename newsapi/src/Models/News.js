@@ -8,6 +8,7 @@ export default class News {
         this.imageUrl = article.urlToImage;
         this.publishedAt = this.cleanDate(article.publishedAt);
         this.content = article.content;
+        this.favorited = false;
 
         this.validation()
     }
