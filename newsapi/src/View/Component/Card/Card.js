@@ -1,6 +1,7 @@
 import React from "react";
 import "./Card.css";
 import CardFooter from "./CardFooter.js";
+import { connect } from "react-redux";
 
 class Card extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Card extends React.Component {
 
   render() {
     return (
-      <div className="card">
+      <div className="card" id={this.article.id}>
         <div className="row">
           <h2 className="title">{this.article.title}</h2>
         </div>
@@ -30,6 +31,13 @@ class Card extends React.Component {
       </div>
     );
   }
-}
 
-export default Card;
+  MapStateToProps = (state) => {
+    return {
+      items: state.items,
+      route: state.route,
+      search: state.search,
+    };
+  };
+}
+export default connect()(Card);

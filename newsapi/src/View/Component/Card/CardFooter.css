@@ -20,7 +20,7 @@
     height: 25px;
     width: 25px;
     margin: 10px;
-    background-color: white;
+    background-color: rgb(248, 242, 242);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,6 +39,10 @@
     color: red;
     border: none;
     outline: none;
+}
+
+.buttons:hover  {
+    background-color: rgb(197, 197, 197);
 }
 
 .buttons:hover .fa-angle-up {

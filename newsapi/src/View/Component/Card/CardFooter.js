@@ -2,6 +2,7 @@ import React from "react";
 import "./CardFooter.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
 
 class CardFooter extends React.Component {
   render() {
@@ -19,18 +20,38 @@ class CardFooter extends React.Component {
 
           <div
             className="buttons"
-            onClick={(event) => {this.props.controller.FavNews(this.props.news, event)}}
-          >{ this.props.news.favorited === true &&
-            <FontAwesomeIcon icon={faHeart} className='faved' />
-          }
-          { this.props.news.favorited === false &&
-            <FontAwesomeIcon icon={faHeart}/>
-          }
+            onClick={async (event) => {
+              let newNews = await this.props.controller.FavNews(
+                this.props.news,
+                event
+              );
+              let id = newNews.id;
+              this.props.dispatch({
+                type: "update/single",
+                news: newNews,
+                id,
+                route: this.props.route,
+              });
+            }}
+          >
+            {this.props.news.favorited === true && (
+              <FontAwesomeIcon icon={faHeart} className="faved" />
+            )}
+            {this.props.news.favorited === false && (
+              <FontAwesomeIcon icon={faHeart} />
+            )}
           </div>
         </div>
       </div>
     );
   }
 }
+const MapStateToProps = (state) => {
+  return {
+    items: state.items,
+    route: state.route,
+    serach: state.search,
+  };
+};
 
-export default CardFooter;
+export default connect(MapStateToProps)(CardFooter);

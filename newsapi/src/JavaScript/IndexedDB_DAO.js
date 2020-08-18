@@ -65,29 +65,57 @@ export class NewsDB {
    * @param {News} noticia
    */
   addNewsToFav = async (noticia) => {
-    let req = await this.connection(this.dbName);
+    let idRequest = new Promise(async resolve => {
 
-    req.onsuccess = (e) => {
+      let req = await this.connection(this.dbName);
+      
+      req.onsuccess = (e) => {
       let db = e.target.result;
       let store = db
-        .transaction(this.tableName, "readwrite")
-        .objectStore(this.tableName);
+      .transaction(this.tableName, "readwrite")
+      .objectStore(this.tableName);
       let storeAdd = store.add(noticia);
-
+      
       storeAdd.onsuccess = (e) => {
-        let newsId = e.target.result;
-        console.log(
-          "Adicionado noticia aos favoritos. Id da Noticia: " + newsId
-        );
+        resolve(e.target.result);
       };
-
+      
       storeAdd.onerror = () => {
         console.log("Não foi possível adicionar a noticia");
       };
     };
-
+    
     req.onerror = (e) => {
       console.log("Não foi possível abrir o Db" + this.dbName);
+    };
+    })
+
+    let newId = await idRequest;
+    return newId;
+  };
+
+  /**
+   * @since 1.0.0
+   * @author Sergio Segaty <sergio.segaty@gmail.com>
+   * Takes a ID of news, and deletes it from the IndexedDB.
+   * @param {Number} id
+   */
+  deleteNewsById = async (id) => {
+    let req = await this.connection(this.dbName);
+
+    req.onsuccess = (e) => {
+      let db = e.target.result;
+
+      let deleter = db.transaction(this.tableName, "readwrite").objectStore(this.tableName).delete(parseInt(id));
+
+      deleter.onsuccess = () => {
+        console.log('Deletou com Sucesso');
+      }
+
+      deleter.onerror = (e) => {
+        console.log('Error on deleting Favorite News Id: ' + id);
+        throw e;
+      } 
     };
   };
 
@@ -106,10 +134,11 @@ export class NewsDB {
           .transaction(this.tableName, "readwrite")
           .objectStore(this.tableName);
 
-          store.getAll().onsuccess = (resultado) => {
+        store.getAll().onsuccess = (resultado) => {
           result(resultado.target.result.reverse());
         };
       };
+
       req.onerror = () => {
         console.log("Não foi possível abrir o Db" + this.dbName);
       };

@@ -15,10 +15,10 @@ const App = (props) => {
   let search = {};
 
   useEffect(() => {
-    if(props.items === undefined){
+    if (props.items === undefined) {
       router();
     }
-   })
+  });
 
   let procurarPais = (pais) => {
     search = pais;
@@ -54,32 +54,40 @@ const App = (props) => {
     }
 
     result.then((result) => {
-      IndexedDB.getAllNews().then(favReults => {
-        favReults.map(fav => {
-          result.map(article => {
-              if(article.title === fav.title){
-                article.favorited = true;
-              }
-            })
-          })
-          props.dispatch({ type: "UPDATE", items: result, route: route, search: search });
-      })
+      IndexedDB.getAllNews().then((favReults) => {
+        favReults.forEach((fav) => {
+          result.forEach((article) => {
+            if (article.title === fav.title) {
+              article.favorited = true;
+              article.id = fav.id;
+            }
+          });
+        });
+        props.dispatch({
+          type: "update/all",
+          items: result,
+          route: route,
+          search: search,
+        });
+      });
     });
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <NavBar
-          metodos={metodos}
-          router={router}
-          route={props.route}
-        ></NavBar>
+        <NavBar metodos={metodos} router={router} route={props.route}></NavBar>
       </header>
       <div id="mainContainer">
-        {props.items && props.items.map((article) => (
-          <Card news={article} key={article.title} controller={controller} />
-        ))}
+        {props.items &&
+          props.items.map((article) => (
+            <Card
+              news={article}
+              key={article.url + article.favorited}
+              controller={controller}
+              route={props.route}
+            />
+          ))}
       </div>
     </div>
   );

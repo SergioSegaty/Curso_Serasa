@@ -3,16 +3,21 @@ import { NewsDB } from "./IndexedDB_DAO";
 const IndexedDB = new NewsDB("NewsDB", "FavoriteNews");
 
 export class Controller {
-  FavNews = (news, event) => {
+  FavNews = async (news, event) => {
+    news = JSON.parse(JSON.stringify(news));
+
     let svg = event.target.firstChild;
+
     if (news.favorited === false) {
-      news = JSON.stringify(news);
-      IndexedDB.addNewsToFav(JSON.parse(news));
-      svg.classList.add('faved');
+      news.id = await IndexedDB.addNewsToFav(news);
+      news.favorited = true;
+      svg.classList.add("faved");
     } else {
-      svg.classList.remove('faved');
-      // TODO : Criar no Indexed DB uma função que remova o News. IndexedDB.
+      svg.classList.remove("faved");
+      await IndexedDB.deleteNewsById(news.id);
+      news.favorited = false;
     }
+    return news;
   };
 
   RedirectToPage = (url) => {
